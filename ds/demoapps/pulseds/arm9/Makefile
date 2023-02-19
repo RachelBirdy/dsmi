@@ -18,7 +18,8 @@ BUILD		:=	build
 SOURCES		:=	source  
 INCLUDES	:=	include
 DATA		:=
-GRAPHICS    :=  gfx
+GRAPHICS	:=	gfx
+LIBDSMI		:=	$(TOPDIR)/../../libdsmi
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -46,8 +47,7 @@ LIBS	:=	-ldsmi -ldswifi9 -lnds9
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-DSMIDIR := /home/tob/coding/dsdev/tob/dsmi/dsmi/ds/libdsmi/
-LIBDIRS	:=	$(DSMIDIR) $(LIBNDS)
+LIBDIRS	:=	$(LIBDSMI) $(LIBNDS)
  
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -56,7 +56,6 @@ LIBDIRS	:=	$(DSMIDIR) $(LIBNDS)
 ifneq ($(BUILD),$(notdir $(CURDIR)))
 #---------------------------------------------------------------------------------
  
-export ARM9BIN	:=	$(TOPDIR)/$(TARGET).arm9
 export ARM9ELF	:=	$(CURDIR)/$(TARGET).arm9.elf
 export DEPSDIR := $(CURDIR)/$(BUILD)
 
@@ -113,10 +112,6 @@ else
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
-$(ARM9BIN)	:	$(ARM9ELF)
-	@$(OBJCOPY) -O binary $< $@
-	@echo built ... $(notdir $@)
-
 $(ARM9ELF)	:	$(OFILES)
 	@echo linking $(notdir $@)
 	@$(LD)  $(LDFLAGS) $(OFILES) $(LIBPATHS) $(LIBS) -o $@

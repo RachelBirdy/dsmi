@@ -139,7 +139,7 @@ void drawString(const char* str, u8 tx, u8 ty)
 void displayOctave(u8 chn)
 {
 	char cstr[3] = {0, 0, 0};
-	sprintf(cstr, "%u", chn);
+	siprintf(cstr, "%u", chn);
 	drawFullBox(102, 155, 14, 9, RGB15(26, 26, 26) | BIT(15));
 	drawString(cstr, 102, 155);
 }
@@ -147,7 +147,7 @@ void displayOctave(u8 chn)
 void displayChannel(u8 chn)
 {
 	char cstr[3] = {0, 0, 0};
-	sprintf(cstr, "%u", chn);
+	siprintf(cstr, "%u", chn);
 	drawFullBox(206, 155, 14, 9, RGB15(26, 26, 26) | BIT(15));
 	drawString(cstr, 206, 155);
 }

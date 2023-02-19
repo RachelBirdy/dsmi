@@ -23,7 +23,7 @@ INCLUDES	:=	include
 DATA		:=	data  
 GRAPHICS	:=	gfx  
 
-LIBDSMI     := /home/tob/coding/dsdev/tob/dsmi/dsmi/ds/libdsmi
+LIBDSMI     := $(CURDIR)/../../libdsmi
 
 #---------------------------------------------------------------------------------
 # options for code generation

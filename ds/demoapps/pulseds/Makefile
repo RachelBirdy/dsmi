@@ -11,35 +11,25 @@ export TARGET		:=	$(shell basename $(CURDIR))
 export TOPDIR		:=	$(CURDIR)
 
 
-.PHONY: $(TARGET).arm7 $(TARGET).arm9
-
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
 all: $(TARGET).nds
 
 #---------------------------------------------------------------------------------
-$(TARGET).nds	:	$(TARGET).arm7 $(TARGET).arm9
-	ndstool	-c $(TARGET).nds -7 $(TARGET).arm7 -9 $(TARGET).arm9 -b icon2.bmp "Pulse~DS"
+$(TARGET).nds	:	arm7/$(TARGET).arm7.elf arm9/$(TARGET).arm9.elf
+	ndstool	-c $(TARGET).nds -7 arm7/$(TARGET).arm7.elf -9 arm9/$(TARGET).arm9.elf -b icon2.bmp "Pulse~DS"
 
 #---------------------------------------------------------------------------------
-$(TARGET).arm7	: arm7/$(TARGET).elf
-$(TARGET).arm9	: arm9/$(TARGET).elf
-
-#---------------------------------------------------------------------------------
-arm7/$(TARGET).elf:
+arm7/$(TARGET).arm7.elf:
 	$(MAKE) -C arm7
 	
 #---------------------------------------------------------------------------------
-arm9/$(TARGET).elf:
+arm9/$(TARGET).arm9.elf:
 	$(MAKE) -C arm9
 
 #---------------------------------------------------------------------------------
 clean:
 	$(MAKE) -C arm9 clean
 	$(MAKE) -C arm7 clean
-	rm -f $(TARGET).nds $(TARGET).arm7 $(TARGET).arm9
-
-cp: $(TARGET).nds
-	cp $(TARGET).nds /media/GBAMP
-	pumount /media/GBAMP
+	rm -f $(TARGET).nds
