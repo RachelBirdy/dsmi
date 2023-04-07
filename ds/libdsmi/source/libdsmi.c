@@ -77,9 +77,9 @@ extern int dsmi_connect_dserial(void)
 	//}
 	
 	// Upload firmware if necessary
-	if (!dseMatchFirmware((char*)firmware_bin, firmware_bin_end - firmware_bin))
+	if (!dseMatchFirmware((char*)firmware_bin, firmware_bin_size))
 	{
-		dseUploadFirmware((char *) firmware_bin, firmware_bin_end - firmware_bin);
+		dseUploadFirmware((char *) firmware_bin, firmware_bin_size);
 	}
 	
 	dseBoot();

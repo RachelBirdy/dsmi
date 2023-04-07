@@ -373,7 +373,7 @@ bool dseMatchFirmware(char * data, unsigned int fwsize) {
 	uint16 i;
 	char buffer[BLOCK_SIZE];
 
-	iprintf("Firmware size is 0x%04X.\n", fwsize);
+	// iprintf("Firmware size is 0x%04X.\n", fwsize);
 	for (i = 0; i < fwsize; i++) {
 		uint16 pos = i % BLOCK_SIZE;
 		uint8 size = (i + BLOCK_SIZE <= fwsize) ? BLOCK_SIZE : (fwsize - i);
@@ -381,7 +381,7 @@ bool dseMatchFirmware(char * data, unsigned int fwsize) {
 			dseReadFlash(buffer, 0x0800 + i, size);
 		}
 		if (data[i] != buffer[pos]) {
-			iprintf("Difference at 0x%04X.\n", i);
+			// iprintf("Difference at 0x%04X.\n", i);
 			return false;	/* firmwares do not match */
 		}
 	}
@@ -504,7 +504,11 @@ void dseUartDefaultReceiveHandler(char * data, unsigned int size) {
 
 	memcpy(buffer, data, size);
 	buffer[size] = '\0';
+#ifdef BLOCKSDS
+	printf(buffer);
+#else
 	iprintf(buffer);
+#endif
 }
 
 /* Helpers */
