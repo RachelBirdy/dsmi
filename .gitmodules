@@ -1,0 +1,3 @@
+[submodule "ds/libdsmi/dserial"]
+	path = ds/libdsmi/dserial
+	url = https://github.com/asiekierka/dserial

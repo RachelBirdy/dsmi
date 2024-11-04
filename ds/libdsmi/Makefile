@@ -17,9 +17,9 @@ include $(DEVKITARM)/ds_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	dsmi
 BUILD		:=	build
-SOURCES		:=	source
+SOURCES		:=	source dserial/source
 DATA		:=	data
-INCLUDES	:=	include
+INCLUDES	:=	include dserial/include
  
 #---------------------------------------------------------------------------------
 # options for code generation
