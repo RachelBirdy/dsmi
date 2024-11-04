@@ -7,7 +7,6 @@
 *.elf
 *.arm7
 *.arm9
-*.txt
 *.nds
 ds/demoapps/dsmidikeyboard/arm7/build/
 ds/demoapps/dsmidikeyboard/arm9/build/
