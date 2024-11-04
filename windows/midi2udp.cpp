@@ -23,7 +23,7 @@
 
 #include <QMessageBox>
 
-static void CALLBACK midiin_callback(HMIDIIN hMidiIn, UINT wMsg, DWORD dwInstance, DWORD dwParam1, DWORD dwParam2)
+static void CALLBACK midiin_callback(HMIDIIN hMidiIn, UINT wMsg, DWORD_PTR dwInstance, DWORD_PTR dwParam1, DWORD_PTR dwParam2)
 {
 	switch(wMsg) {
 		case MIM_DATA: {
@@ -105,7 +105,7 @@ bool Midi2Udp::initSeq(int port)
 {
 	closing = false;
 	
-	MMRESULT res = midiInOpen(&midiIn, port, (DWORD)midiin_callback, (DWORD)this, CALLBACK_FUNCTION | MIDI_IO_STATUS);
+	MMRESULT res = midiInOpen(&midiIn, port, (DWORD_PTR) midiin_callback, (DWORD_PTR) this, CALLBACK_FUNCTION | MIDI_IO_STATUS);
 	
 	if(res != MMSYSERR_NOERROR) {
 		return false;
@@ -216,7 +216,7 @@ bool Midi2Udp::prepareSysExBuffer(char *sysExBuffer, MIDIHDR *sysExMidiHeader)
 	return true;
 }
 
-void Midi2Udp::midiMessage(UINT wMsg, DWORD dwParam1, DWORD dwParam2)
+void Midi2Udp::midiMessage(UINT wMsg, DWORD_PTR dwParam1, DWORD_PTR dwParam2)
 {
 	unsigned char *msg = (unsigned char*)&dwParam1;
 	

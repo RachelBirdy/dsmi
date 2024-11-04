@@ -43,7 +43,7 @@ class Midi2Udp
 		bool go(int port);
 		bool changePort(int port);
 	
-		void midiMessage(UINT wMsg, DWORD dwParam1, DWORD dwParam2);
+		void midiMessage(UINT wMsg, DWORD_PTR dwParam1, DWORD_PTR dwParam2);
 		void midiSysExMessage(UINT wMsg, MIDIHDR *pmhdr, unsigned long timestamp);
 	
 		void broadcastMessage(unsigned char *msg, unsigned int len);

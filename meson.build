@@ -1,6 +1,8 @@
 project('DSMIDIWiFi', 'cpp')
 
+compiler = meson.get_compiler('cpp')
 system_dir = build_machine.system()
+
 incdirs = include_directories(system_dir)
 
 if system_dir == 'linux'
@@ -39,6 +41,9 @@ if system_dir == 'windows'
   windows = import('windows')
   sources += windows.compile_resources(system_dir + '/icon.rc',
                                        include_directories: incdirs)
+
+  deps += compiler.find_library('ws2_32', required: true)
+  deps += compiler.find_library('winmm', required: true)
 endif
 
 if system_dir == 'linux'
