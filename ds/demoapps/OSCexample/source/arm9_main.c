@@ -264,7 +264,7 @@ int main(void)
 	videoSetModeSub(MODE_5_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG2_ACTIVE);
 	
 	// Set banks
-	vramSetMainBanks(VRAM_A_MAIN_BG_0x06000000, VRAM_B_MAIN_BG_0x06020000,
+	vramSetPrimaryBanks(VRAM_A_MAIN_BG_0x06000000, VRAM_B_MAIN_BG_0x06020000,
 		VRAM_C_SUB_BG_0x06200000 , VRAM_D_LCD);
 	
 	// Gfx on main
@@ -294,38 +294,38 @@ int main(void)
 	drawSlider2();
 	drawSlider3();
 	
-	iprintf("\x1b[12;12HOSC Demo\n");
+	printf("\x1b[12;12HOSC Demo\n");
 	
-	iprintf("\x1b[15;0H\x1b[KConnecting\n");
+	printf("\x1b[15;0H\x1b[KConnecting\n");
 	int res = dsmi_connect();
 	
 	if(res == 1) {
-		iprintf("\x1b[15;0H\x1b[KOK\n");
+		printf("\x1b[15;0H\x1b[KOK\n");
 	} else {
-		iprintf("\x1b[15;0H\x1b[KOh no, could not connect!\n");
+		printf("\x1b[15;0H\x1b[KOh no, could not connect!\n");
 		while(1);
 	}
 	
 	
 	while(1)
 	{
-		int ret, i;
+		int ret;
 		char data[32];
 		size_t size = sizeof(data);
 	       	char type;
 
 		VblankHandler();
 		while( dsmi_osc_read() ){
-			iprintf("\x1b[17;0H\x1b[K%s\n", dsmi_osc_getaddr());
-			while( ret = dsmi_osc_getnextarg( data, &size, &type)){
+			printf("\x1b[17;0H\x1b[K%s\n", dsmi_osc_getaddr());
+			while((ret = dsmi_osc_getnextarg( data, &size, &type))) {
 				if( ret == -1) break; //buffer too small error
 				switch(type){
 					case 'i':
 					case 'f':
-					  iprintf("%c : 0x%x%x%x%x\n", type, data[0], data[1], data[2], data[3]);
+					  printf("%c : 0x%x%x%x%x\n", type, data[0], data[1], data[2], data[3]);
 					  break;
 					case 's':
-					  iprintf("%c : %s\n", type, data);
+					  printf("%c : %s\n", type, data);
 					  break;
 					default:
 					  break;

@@ -138,16 +138,16 @@ void drawString(const char* str, u8 tx, u8 ty)
 
 void displayOctave(u8 chn)
 {
-	char cstr[3] = {0, 0, 0};
-	siprintf(cstr, "%u", chn);
+	char cstr[5] = {0};
+	sprintf(cstr, "%u", chn);
 	drawFullBox(102, 155, 14, 9, RGB15(26, 26, 26) | BIT(15));
 	drawString(cstr, 102, 155);
 }
 
 void displayChannel(u8 chn)
 {
-	char cstr[3] = {0, 0, 0};
-	siprintf(cstr, "%u", chn);
+	char cstr[5] = {0};
+	sprintf(cstr, "%u", chn);
 	drawFullBox(206, 155, 14, 9, RGB15(26, 26, 26) | BIT(15));
 	drawString(cstr, 206, 155);
 }
@@ -279,7 +279,7 @@ void VblankHandler(void)
 			baseOctave++;
 		
 		displayOctave(baseOctave);
-		iprintf("base octave %u\n", baseOctave);
+		printf("base octave %u\n", baseOctave);
 	}
 	
 	if(keysdown & KEY_LEFT)
@@ -288,7 +288,7 @@ void VblankHandler(void)
 			baseOctave--;
 		
 		displayOctave(baseOctave);
-		iprintf("base octave %u\n", baseOctave);
+		printf("base octave %u\n", baseOctave);
 	}
 	
 	if(keysdown & KEY_UP)
@@ -297,7 +297,7 @@ void VblankHandler(void)
 			channel++;
 		
 		displayChannel(channel);
-		iprintf("using midi channel %u\n", channel);
+		printf("using midi channel %u\n", channel);
 	}
 	
 	if(keysdown & KEY_DOWN)
@@ -306,7 +306,7 @@ void VblankHandler(void)
 			channel--;
 		
 		displayChannel(channel);
-		iprintf("using midi channel %u\n", channel);
+		printf("using midi channel %u\n", channel);
 	}
 	
 	if(keysdown & KEY_B) {
@@ -327,7 +327,7 @@ int main(void)
 	irqEnable(IRQ_VBLANK);
 	
 	// Set banks
-	vramSetMainBanks(VRAM_A_MAIN_BG_0x06000000, VRAM_B_MAIN_BG_0x06020000,
+	vramSetPrimaryBanks(VRAM_A_MAIN_BG_0x06000000, VRAM_B_MAIN_BG_0x06020000,
 	           VRAM_C_SUB_BG_0x06200000 , VRAM_D_LCD);
 	
 	// Set modes
@@ -389,17 +389,17 @@ int main(void)
 	
 	drawString("connecting ...", 89, 96);
 	
-	iprintf("Connecting\n");
+	printf("Connecting\n");
 	int res = dsmi_connect();
 	if(res == 1) {
-		iprintf("OK\n");
+		printf("OK\n");
 	} else {
-		iprintf("Oh no! Could not connect\n");
+		printf("Oh no! Could not connect\n");
 		drawString("failed!", 180, 96);
 		while(1);
 	}
 	
-	iprintf("Ready.\n");
+	printf("Ready.\n");
 
 	// Copy the keyboard to the screen
 	kb_map = (u16*)bgGetMapPtr(main_bg0);

@@ -42,7 +42,7 @@ void kaos_y()
 
 void printChannel()
 {
-	iprintf("\x1b[15;0H\x1b[KUsing MIDI channel %u\n", channel);
+	printf("\x1b[15;0H\x1b[KUsing MIDI channel %u\n", channel);
 }
 
 void VblankHandler()
@@ -85,7 +85,7 @@ int main(void)
 	lcdMainOnBottom();
 
 	// Set banks
-	vramSetMainBanks(VRAM_A_MAIN_BG_0x06000000, VRAM_B_MAIN_BG_0x06020000,
+	vramSetPrimaryBanks(VRAM_A_MAIN_BG_0x06000000, VRAM_B_MAIN_BG_0x06020000,
 		VRAM_C_SUB_BG_0x06200000 , VRAM_D_LCD);
 
 	// Set modes
@@ -107,21 +107,21 @@ int main(void)
 		sub_vram[i] = dsmi_logo_dsBitmap[i] | BIT(15);
 	}
 
-	iprintf("\x1b[12;12HKaos-DS\n");
+	printf("\x1b[12;12HKaos-DS\n");
 	
-	iprintf("\x1b[15;0H\x1b[KConnecting\n");
+	printf("\x1b[15;0H\x1b[KConnecting\n");
 	int res = dsmi_connect();
 	
 	if(res == 1) {
-		iprintf("\x1b[15;0H\x1b[KOK\n");
+		printf("\x1b[15;0H\x1b[KOK\n");
 	} else {
-		iprintf("\x1b[15;0H\x1b[KOh no, could not connect!\n");
+		printf("\x1b[15;0H\x1b[KOh no, could not connect!\n");
 		while(1);
 	}
 	
 	printChannel();
 	
-	iprintf("\nX sends a single X axis event.\n\
+	printf("\nX sends a single X axis event.\n\
 Y sends a single Y axis event.\n\
 Up/down change MIDI channels");
 

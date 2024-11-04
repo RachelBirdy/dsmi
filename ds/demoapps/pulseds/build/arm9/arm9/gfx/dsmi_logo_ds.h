@@ -4,11 +4,12 @@
 //======================================================================
 //
 //	dsmi_logo_ds, 256x192@16, 
+//	Transparent color : FF,00,FF
 //	+ bitmap not compressed
 //	Total size: 98304 = 98304
 //
-//	Time-stamp: 2010-04-04, 19:27:18
-//	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
+//	Time-stamp: 2024-11-04, 09:15:41
+//	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
 //======================================================================

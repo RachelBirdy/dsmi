@@ -45,16 +45,16 @@ int main(void)
 	u16 *bg2vram = bgGetGfxPtr(bg2);
 	dmaCopy(dsmi_logo_dsBitmap, bg2vram, 256*192);
 	
-	iprintf("\x1b[12;12HPulse DS\n");
+	printf("\x1b[12;12HPulse DS\n");
 	
 	// Connect
 	int res = dsmi_connect();
 	while(res == 0) {
-		iprintf("\x1b[15;0H\x1b[KCould not connect. We apologize for the inconvecience.\n");
+		printf("\x1b[15;0H\x1b[KCould not connect. We apologize for the inconvecience.\n");
 		while(1);
 	}
 	
-	iprintf("\x1b[15;0H\x1b[KRunning.\n");
+	printf("\x1b[15;0H\x1b[KRunning.\n");
 	
 	u8 message, data1, data2;
 	while(1)

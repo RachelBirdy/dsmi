@@ -4,6 +4,13 @@
 #include "psg.h"
 #include "../../generic/midimsg.h"
 
+volatile bool exit_loop = false;
+
+void power_button_callback(void)
+{
+	exit_loop = true;
+}
+
 // Thanks to LiraNuna for this cool function
 void PM_SetRegister(int reg, int control)
 {
@@ -31,28 +38,40 @@ void midiHandler(int num_bytes, void * userdata) {
 }
 
 int main() {
+	readUserSettings();
+	ledBlink(0);
+	touchInit();
+
 	irqInit();
 	fifoInit();
-
-	readUserSettings();
 
 	// Start the RTC tracking IRQ
 	initClockIRQ();
 
 	SetYtrigger(80);
+	setPowerButtonCB(power_button_callback);
 
-	installWifiFIFO();
 	installSystemFIFO();
+	installWifiFIFO();
 	fifoSetDatamsgHandler(FIFO_MIDI, midiHandler, 0);
-	
+
 	irqSet(IRQ_VCOUNT, VcountHandler);
 	irqSet(IRQ_VBLANK, VblankHandler);
-	
+
 	psg_init();
-	
-	irqEnable( IRQ_VBLANK | IRQ_VCOUNT | IRQ_NETWORK);   
 
-    PM_SetRegister(0, 9);
+	irqEnable(IRQ_VBLANK | IRQ_VCOUNT | IRQ_NETWORK);
 
-	while (1) {swiWaitForVBlank(); }
+	PM_SetRegister(0, 9);
+
+	while (!exit_loop)
+	{
+		const uint16_t key_mask = KEY_SELECT | KEY_START | KEY_L | KEY_R;
+		uint16_t keys_pressed = ~REG_KEYINPUT;
+
+		if ((keys_pressed & key_mask) == key_mask)
+			exit_loop = true;
+
+		swiWaitForVBlank();
+	}
 }
