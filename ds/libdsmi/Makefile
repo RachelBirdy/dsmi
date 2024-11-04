@@ -20,7 +20,8 @@ BUILD		:=	build
 SOURCES		:=	source dserial/source
 DATA		:=	data
 INCLUDES	:=	include dserial/include
- 
+DEFINES		:=	-DDSMI_SUPPORT_DSERIAL -DDSMI_SUPPORT_WIFI
+
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
@@ -32,8 +33,8 @@ CFLAGS	:=	-Wall -O2\
 		-fno-strict-aliasing \
 		$(ARCH)
  
-CFLAGS	+=	$(INCLUDE) -DARM9
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions
+CFLAGS	+=	$(INCLUDE) -DARM9 $(DEFINES)
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions $(DEFINES)
  
 ASFLAGS	:=	-g $(ARCH) -march=armv5te -mtune=arm946e-s
 LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)

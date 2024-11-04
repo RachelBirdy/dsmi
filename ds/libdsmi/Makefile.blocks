@@ -8,18 +8,23 @@ export BLOCKSDSEXT		?= /opt/blocksds/external
 export WONDERFUL_TOOLCHAIN	?= /opt/wonderful
 ARM_NONE_EABI_PATH	?= $(WONDERFUL_TOOLCHAIN)/toolchain/gcc-arm-none-eabi/bin/
 
+# Configuration
+# -------------
+
+USB_ENABLED	:= 1
+
 # Source code paths
 # -----------------
 
 SOURCEDIRS	:= source dserial/source
-INCLUDEDIRS	:= include dserial/include
+INCLUDEDIRS	:= include source dserial/include
 GFXDIRS		:=
 BINDIRS		:= data
 
 # Defines passed to all files
 # ---------------------------
 
-DEFINES		:=
+DEFINES		:=	-DDSMI_SUPPORT_DSERIAL -DDSMI_SUPPORT_WIFI
 
 # Libraries
 # ---------
@@ -71,6 +76,16 @@ endif
 SOURCES_S	:= $(shell find -L $(SOURCEDIRS) -name "*.s")
 SOURCES_C	:= $(shell find -L $(SOURCEDIRS) -name "*.c")
 SOURCES_CPP	:= $(shell find -L $(SOURCEDIRS) -name "*.cpp")
+
+# TinyUSB support
+# ---------------
+
+ifeq ($(USB_ENABLED),1)
+TINYUSB_PATH	:= tinyusb
+TINYUSB_DEBUG	:= 0
+include $(TINYUSB_PATH)/hw/bsp/nds_nrio/blocksds.mk
+DEFINES		+= -DDSMI_SUPPORT_USB
+endif
 
 # Compiler and linker flags
 # -------------------------

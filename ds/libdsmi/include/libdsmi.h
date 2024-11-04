@@ -38,9 +38,12 @@
 // data1 is the least significant 7 bits and data2 is the most significant 7 bits
 #define MIDI_PC	0xE0
 
-#define DSMI_SERIAL	0
-#define DSMI_WIFI	1
-
+typedef enum {
+    DSMI_NONE = 0,
+    DSMI_SERIAL,
+    DSMI_WIFI,
+    DSMI_USB
+} dsmi_type_t;
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,12 +59,17 @@ extern "C" {
 // Returns 1 if connected, and 0 if failed.
 extern int dsmi_connect(void);
 
+extern void dsmi_disconnect(void);
+
 // Using these you can force a wifi connection even if a DSerial is
 // inserted or set up both connections for forwarding.
 extern int dsmi_connect_dserial(void);
 extern int dsmi_connect_wifi(void);
+extern int dsmi_connect_usb(void);
 
-
+// Periodically run a DSMIDI task outside of an interrupt handler.
+// Returns 1 if task is necessary; 0 otherwise (so you can idle).
+extern bool dsmi_task(void);
 
 // ------------ WRITE ------------ //
 
@@ -73,6 +81,9 @@ extern void dsmi_write_dserial(u8 message,u8 data1, u8 data2);
 
 // Force a MIDI message to be sent over Wifi
 extern void dsmi_write_wifi(u8 message,u8 data1, u8 data2);
+
+// Force a MIDI message to be sent over USB
+extern void dsmi_write_usb(u8 message,u8 data1, u8 data2);
 
 // ------------ OSC WRITE ------------ //
 // OSC messages are sent only over wifi and do not require the dsmidiwifi server application
@@ -109,6 +120,8 @@ extern int dsmi_read(u8* message, u8* data1, u8* data2);
 // Force receiving over Wifi
 extern int dsmi_read_wifi(u8* message, u8* data1, u8* data2);
 
+// Force receiving over USB
+extern int dsmi_read_usb(u8* message, u8* data1, u8* data2);
 
 // ------------ OSC READ-------- //
 //Returns 1 if message was received, 0 otherwise
@@ -124,8 +137,8 @@ extern int dsmi_osc_getnextarg( void* data, size_t* size, char* type );
 
 // ------------ MISC ------------ //
 
-// Returns the default interface (DSMI_SERIAL or DSMI_WIFI)
-extern int dsmi_get_default_interface(void);
+// Returns the default interface
+extern dsmi_type_t dsmi_get_default_interface(void);
 
 
 
