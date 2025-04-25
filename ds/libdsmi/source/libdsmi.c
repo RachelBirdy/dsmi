@@ -119,8 +119,8 @@ int dsmi_connect_dserial(void)
 }
 #endif
 
-void dsmi_timer_50ms(void) {
 #ifdef DSMI_SUPPORT_WIFI
+void dsmi_timer_50ms(void) {
     Wifi_Timer(50);
 
     if(wifi_enabled && default_interface == DSMI_WIFI)
@@ -134,48 +134,19 @@ void dsmi_timer_50ms(void) {
             dsmi_write(0, 0, 0);
         }
     }
-#endif
 }
+#endif
 
 #ifdef DSMI_SUPPORT_WIFI
 // Modified version of dswifi's init function that uses a custom timer handler
 // In addition to calling Wifi_Timer, new new handler also sends the DSMI keepalive
 // beacon.
 bool dsmi_wifi_init(void) {
-    fifoSetValue32Handler(FIFO_DSWIFI,  wifiValue32Handler, 0);
+    if (!Wifi_InitDefault(true))
+        return false;
 
-    u32 wifi_pass = Wifi_Init(WIFIINIT_OPTION_USELED);
-
-    if(!wifi_pass) return false;
-
-    irqSet(IRQ_TIMER3, dsmi_timer_50ms); // setup timer IRQ
-    irqEnable(IRQ_TIMER3);
-
-    Wifi_SetSyncHandler(arm9_synctoarm7); // tell wifi lib to use our handler to notify arm7
-
-    // set timer3
-    TIMER3_DATA = -6553; // 6553.1 * 256 cycles = ~50ms;
-    TIMER3_CR = 0x00C2; // enable, irq, 1/256 clock
-
-    fifoSendAddress(FIFO_DSWIFI, (void *)wifi_pass);
-
-    while(Wifi_CheckInit()==0) {
-        swiWaitForVBlank();
-    }
-
-    int wifiStatus = ASSOCSTATUS_DISCONNECTED;
-
-    Wifi_AutoConnect(); // request connect
-
-    while(wifiStatus != ASSOCSTATUS_ASSOCIATED) {
-        wifiStatus = Wifi_AssocStatus(); // check status
-
-        if(wifiStatus == ASSOCSTATUS_CANNOTCONNECT) return false;
-        swiWaitForVBlank();
-
-    }
-
-    return true;    
+    irqSet(IRQ_TIMER3, dsmi_timer_50ms); // steal timer IRQ
+    return true;
 }
 
 int dsmi_connect_wifi(void)
@@ -397,7 +368,7 @@ int dsmi_read(u8* message, u8* data1, u8* data2)
 #endif
 #ifdef DSMI_SUPPORT_USB
 	if(default_interface == DSMI_USB)
-		return dsmi_read_wifi(message, data1, data2);
+		return dsmi_read_usb(message, data1, data2);
 #endif
 	return 0;
 }

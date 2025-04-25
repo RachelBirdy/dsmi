@@ -24,7 +24,7 @@ BINDIRS		:= data
 # Defines passed to all files
 # ---------------------------
 
-DEFINES		:=	-DDSMI_SUPPORT_DSERIAL -DDSMI_SUPPORT_WIFI
+DEFINES		:=	-DDSMI_SUPPORT_DSERIAL -DDSMI_SUPPORT_USB -DDSMI_SUPPORT_WIFI
 
 # Libraries
 # ---------
