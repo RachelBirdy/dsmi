@@ -78,7 +78,7 @@ uint8_t const * tud_descriptor_device_cb(void)
 enum
 {
   ITF_NUM_MIDI = 0,
-  ITF_NUM_TOTAL
+  ITF_NUM_TOTAL = 2
 };
 
 #define CONFIG_TOTAL_LEN  (TUD_CONFIG_DESC_LEN + TUD_MIDI_DESC_LEN)
