@@ -404,9 +404,9 @@ int dsmi_read_usb(u8* message, u8* data1, u8* data2)
 
 	tud_midi_packet_read(recbuf);
 
-	*message = recbuf[0];
-	*data1 = recbuf[1];
-	*data2 = recbuf[2];
+	*message = recbuf[1];
+	*data1 = recbuf[2];
+	*data2 = recbuf[3];
 
 	return 1;
 }
